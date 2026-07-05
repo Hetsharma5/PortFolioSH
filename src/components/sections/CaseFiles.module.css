@@ -1,0 +1,237 @@
+/* ---------- Case header strip ---------- */
+.caseHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  transition: background-color var(--speed) var(--ease);
+}
+
+.caseNumber {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--text-3);
+  transition: color var(--speed) var(--ease);
+}
+
+.caseStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  color: var(--text-3);
+}
+
+.caseStatus i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+.statusActive {
+  color: var(--accent);
+}
+
+.statusActive i {
+  background: var(--accent);
+  animation: blink 2.2s var(--ease) infinite;
+}
+
+/* "Opening the file" — the header warms up when the card is hovered. */
+.featuredCard:hover .caseHead,
+.card:hover .caseHead {
+  background: var(--accent-tint);
+}
+
+.featuredCard:hover .caseNumber,
+.card:hover .caseNumber {
+  color: var(--accent);
+}
+
+/* ---------- Featured card ---------- */
+.featuredCard {
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.featuredGrid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+}
+
+.featuredVisual {
+  position: relative;
+  border-left: 1px solid var(--border);
+  background: radial-gradient(ellipse at 70% 30%, rgba(var(--accent-rgb), 0.09), transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  min-height: 420px;
+}
+
+/* ---------- Compact cards ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.grid > * {
+  min-width: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.visual {
+  aspect-ratio: 16 / 8.5;
+  padding: 26px 26px 0;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.05), transparent);
+  overflow: hidden;
+}
+
+/* ---------- Shared body ---------- */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 26px 26px;
+}
+
+.bodyFeatured {
+  padding: clamp(26px, 4vw, 40px);
+}
+
+.title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.bodyFeatured .title {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+}
+
+.block {
+  margin-bottom: 18px;
+}
+
+.blockLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6563rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 7px;
+}
+
+.mission,
+.outcome {
+  font-size: 0.9375rem;
+}
+
+.challenges {
+  display: grid;
+  gap: 8px;
+}
+
+.challenges li {
+  position: relative;
+  padding-left: 19px;
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.challenges li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+.tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--border-strong);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-1);
+  transition:
+    border-color var(--speed) var(--ease),
+    background-color var(--speed) var(--ease),
+    transform var(--speed) var(--ease);
+}
+
+.action:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.actionPrimary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #06120c;
+}
+
+.actionPrimary:hover {
+  background: var(--accent-bright);
+  box-shadow: var(--shadow-accent);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 880px) {
+  .featuredGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .featuredVisual {
+    order: -1;
+    border-left: none;
+    border-bottom: 1px solid var(--border);
+    min-height: 320px;
+    padding: 32px;
+  }
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

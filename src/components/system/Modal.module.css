@@ -1,0 +1,102 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  background: rgba(6, 7, 8, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: overlayIn 0.25s var(--ease);
+}
+
+.dialog {
+  width: min(520px, 100%);
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: var(--radius-l);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-2);
+  animation: dialogIn 0.3s var(--ease);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.close {
+  display: inline-flex;
+  padding: 6px;
+  border-radius: var(--radius-s);
+  color: var(--text-2);
+  transition: color var(--speed) var(--ease);
+}
+
+.close:hover {
+  color: var(--text-1);
+}
+
+.body {
+  padding: 20px;
+  font-size: 0.9375rem;
+}
+
+.foot {
+  padding: 0 20px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.closeFile {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 8px 16px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--border-strong);
+  color: var(--text-2);
+  transition:
+    color var(--speed) var(--ease),
+    border-color var(--speed) var(--ease);
+}
+
+.closeFile:hover {
+  color: var(--text-1);
+  border-color: var(--accent);
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

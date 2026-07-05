@@ -1,0 +1,89 @@
+.list {
+  display: grid;
+  gap: 20px;
+  max-width: 780px;
+}
+
+.card {
+  display: flex;
+  gap: 20px;
+  padding: 28px 32px;
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-m);
+  background: var(--accent-tint);
+  color: var(--accent-bright);
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.degree {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.school {
+  margin-top: 4px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--accent-bright);
+}
+
+.period {
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--glass);
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+.details {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.details li {
+  position: relative;
+  padding-left: 19px;
+  font-size: 0.9375rem;
+}
+
+.details li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+@media (max-width: 560px) {
+  .card {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

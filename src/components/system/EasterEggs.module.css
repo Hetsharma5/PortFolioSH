@@ -1,0 +1,54 @@
+.notes {
+  display: grid;
+  gap: 12px;
+}
+
+.notes li {
+  position: relative;
+  padding-left: 20px;
+  color: var(--text-2);
+}
+
+.notes li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+.notes code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--accent-bright);
+}
+
+.stats {
+  display: grid;
+  gap: 12px;
+}
+
+.stats > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.stats dt {
+  color: var(--text-3);
+  font-size: 0.875rem;
+}
+
+.stats dd {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-1);
+  text-align: right;
+}

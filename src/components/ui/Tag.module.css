@@ -1,0 +1,20 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-2);
+  white-space: nowrap;
+  transition:
+    border-color var(--speed) var(--ease),
+    color var(--speed) var(--ease);
+}
+
+.tag:hover {
+  border-color: var(--border-strong);
+  color: var(--text-1);
+}
