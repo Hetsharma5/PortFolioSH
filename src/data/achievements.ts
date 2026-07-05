@@ -7,30 +7,29 @@ export interface Achievement {
   detail: string;
 }
 
-// Replace with your real numbers.
 export const achievements: Achievement[] = [
   {
-    icon: "smartphone",
-    metric: "2 stores",
-    label: "Sattys shipped to iOS & Android",
-    detail: "Designed, built, and released end to end as a single engineer.",
+    icon: "trophy",
+    metric: "3",
+    label: "Hackathons competed in",
+    detail: "Odoo, Smart India Hackathon (SIH), and GDG events focused on software innovation.",
   },
   {
-    icon: "trophy",
-    metric: "2,000+",
-    label: "Downloads in week one",
-    detail: "University fest app I built and led during my B.Tech.",
+    icon: "award",
+    metric: "3",
+    label: "Certifications earned",
+    detail: "AWS Cloud Foundations, AWS Cloud Security Foundations, and Certified SOLIDWORKS Associate (CSWA).",
   },
   {
     icon: "folder",
-    metric: "12+",
-    label: "Projects designed & shipped",
-    detail: "From marketing sites to production platforms, web and mobile.",
+    metric: "6",
+    label: "Projects designed & built",
+    detail: "Spanning web, mobile, machine learning, and IoT — from a production grocery app to a CNN-based diagnostic pipeline.",
   },
   {
-    icon: "zap",
-    metric: "3+ yrs",
-    label: "Writing production code",
-    detail: "TypeScript across the stack, with tests where they earn their keep.",
+    icon: "graduationCap",
+    metric: "7.70 SGPA",
+    label: "Through the 5th semester",
+    detail: "B.Tech in Computer Science & Engineering, Karnavati University — expected April 2027.",
   },
 ];

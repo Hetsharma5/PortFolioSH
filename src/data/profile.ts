@@ -1,7 +1,7 @@
 export interface SocialLink {
   label: string;
   url: string;
-  icon: "github" | "linkedin" | "x";
+  icon: "github" | "linkedin";
 }
 
 export const profile = {
@@ -16,10 +16,8 @@ export const profile = {
   availability: "Open to new cases",
   email: "hetsharma0585@gmail.com",
   quote: "Every system leaves clues. Every problem has a solution.",
-  // Replace these with your real profile URLs.
   socials: [
-    { label: "GitHub", url: "https://github.com/hetsharma", icon: "github" },
-    { label: "LinkedIn", url: "https://www.linkedin.com/in/hetsharma", icon: "linkedin" },
-    { label: "X (Twitter)", url: "https://x.com/hetsharma", icon: "x" },
+    { label: "GitHub", url: "https://github.com/Hetsharma5", icon: "github" },
+    { label: "LinkedIn", url: "https://linkedin.com/in/hetsharma5", icon: "linkedin" },
   ] satisfies SocialLink[],
 };

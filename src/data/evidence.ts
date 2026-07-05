@@ -47,67 +47,89 @@ export const evidenceFiles: EvidenceFile[] = [
     outcome:
       "In production. Customer app on iOS & Android, role-based admin area, and a hardened API with sanitized inputs and Zod-validated routes.",
     tech: ["React Native", "Expo", "TypeScript", "Express 5", "MongoDB", "Zustand", "Razorpay", "Cloudinary"],
-    github: "https://github.com/hetsharma/sattys",
-    demo: "https://sattys.com",
+    github: "https://github.com/Hetsharma5",
+    demo: "https://sattys.in",
     visual: "commerce-phone",
     featured: true,
   },
   {
-    id: "pulseboard",
+    id: "breast-cancer-detection",
     number: "EF-002",
-    title: "Pulseboard",
-    mission: "Give small SaaS teams live metrics without a heavyweight analytics suite.",
+    title: "Breast Cancer Detection using Deep Learning",
+    mission:
+      "Classify breast ultrasound images into Normal, Benign, and Malignant to support faster, more consistent screening.",
     problem:
-      "Off-the-shelf analytics tools were overkill for small teams — expensive, slow to update, and too generic for the specific funnels they actually cared about.",
+      "Manually reviewing ultrasound images is slow and depends heavily on the reviewer's experience — the visual differences between benign and malignant tissue can be subtle.",
     status: "CLOSED",
     investigation: [
-      "Sub-second updates through a fan-out WebSocket layer",
-      "60fps charts drawn on canvas — no charting library",
+      "Built and compared four CNN architectures — AlexNet, ResNet50, GoogLeNet, and EfficientNet — on the same dataset",
+      "Tuned preprocessing and augmentation for a small, imbalanced medical-imaging dataset",
     ],
     solution:
-      "Built a lightweight live dashboard with custom canvas charts and a WebSocket fan-out layer for near-instant updates.",
-    outcome: "Live dashboard with funnels and alert rules that notify over email and Slack.",
-    tech: ["React", "TypeScript", "Node.js", "WebSockets", "PostgreSQL", "Docker"],
-    github: "https://github.com/hetsharma/pulseboard",
-    demo: "https://pulseboard-demo.vercel.app",
-    visual: "dashboard-browser",
-  },
-  {
-    id: "devmate",
-    number: "EF-003",
-    title: "DevMate AI",
-    mission: "Summarize pull requests and suggest focused improvements, straight into GitHub reviews.",
-    problem:
-      "Reviewing large pull requests eats time and important details get skimmed — feedback that should take minutes stretches into hours.",
-    status: "CLOSED",
-    investigation: [
-      "Diff-aware prompting to keep Claude API reviews focused and cheap",
-      "Token-by-token streaming so feedback feels instant",
-    ],
-    solution:
-      "Built a bot that reads diffs, prompts Claude for targeted feedback, and posts it back as native GitHub review comments.",
-    outcome: "Posts suggestions as native GitHub review comments; used on my own repos daily.",
-    tech: ["React", "Node.js", "Claude API", "GitHub API", "Redis"],
-    github: "https://github.com/hetsharma/devmate-ai",
+      "Built a CNN pipeline that classifies ultrasound images across all three categories, benchmarking multiple architectures to find the strongest performer.",
+    outcome: "Best-performing model reached ~92% classification accuracy across all three classes.",
+    tech: ["Python", "Deep Learning", "CNN", "AlexNet", "ResNet50", "GoogLeNet", "EfficientNet"],
+    github: "https://github.com/Hetsharma5",
     visual: "chat-browser",
   },
   {
-    id: "tripkit",
-    number: "EF-004",
-    title: "TripKit",
-    mission: "Let friends plan trips together — shared itineraries, expense splitting, stop voting.",
+    id: "smart-traffic-light",
+    number: "EF-003",
+    title: "IoT Smart Traffic Light Control System",
+    mission:
+      "Cut needless idle time at intersections by making a traffic signal react to actual traffic instead of a fixed timer.",
     problem:
-      "Group trip planning was scattered across chat threads, spreadsheets, and separate expense apps, with no single source of truth.",
+      "Fixed-timer traffic lights hold a red signal even when there's no cross traffic, wasting time and fuel at the intersection.",
     status: "CLOSED",
     investigation: [
-      "Offline-first writes with conflict-free merge on reconnect",
-      "Per-person settlement math that survives partial data",
+      "Vehicle detection using ultrasonic sensors wired to an ESP32 at each approach",
+      "Dynamic signal-timing logic that adjusts green-light duration to real-time traffic load",
     ],
     solution:
-      "Built a realtime collaborative planner backed by Firestore listeners, with offline-first writes and automatic settlement math.",
-    outcome: "Realtime collaborative planner backed by Firestore listeners, built mobile-first.",
-    tech: ["React Native", "Expo", "TypeScript", "Firebase", "Maps SDK"],
-    github: "https://github.com/hetsharma/tripkit",
+      "Built an ESP32-based traffic light controller that senses vehicle presence per approach and adjusts signal timing accordingly.",
+    outcome:
+      "Working prototype that detects vehicles and shortens green-light time on empty approaches, reducing idle traffic flow.",
+    tech: ["ESP32", "C++", "Ultrasonic Sensors", "IoT", "Embedded Systems"],
+    github: "https://github.com/Hetsharma5",
     visual: "travel-phone",
+  },
+  {
+    id: "sattys-in",
+    number: "EF-004",
+    title: "Sattys.in",
+    mission: "Build and deploy the web platform for Sattys, end to end, as a full stack developer.",
+    problem:
+      "Sattys needed a web presence beyond the mobile app — a way for people to reach the platform without installing anything first.",
+    status: "ACTIVE",
+    investigation: [
+      "Frontend wired to the same Express + MongoDB API as the mobile app, without duplicating business logic",
+      "Database connectivity built for dynamic, real-time interaction rather than a static page",
+    ],
+    solution:
+      "Developed and deployed a production website — frontend, backend integration, and database connectivity for dynamic user interaction.",
+    outcome: "Live in production at sattys.in.",
+    tech: ["Full-Stack Web Development", "Express", "MongoDB", "REST APIs"],
+    github: "https://github.com/Hetsharma5",
+    demo: "https://sattys.in",
+    visual: "dashboard-browser",
+  },
+  {
+    id: "spendo",
+    number: "EF-005",
+    title: "Spendo — Personal Finance Tracker",
+    mission: "Give people a simple, trustworthy way to track personal expenses.",
+    problem:
+      "Most budgeting apps are either too complex to bother with or too opaque to trust with personal transaction data.",
+    status: "CLOSED",
+    investigation: [
+      "Designed a relational schema for users, categories, and transactions",
+      "Built REST APIs in Flask for secure storage and retrieval of financial transactions",
+    ],
+    solution:
+      "Built a full-stack expense tracker with a Flask backend, a SQL database, and REST APIs for recording and querying transactions.",
+    outcome: "Working expense tracker that stores and categorizes transactions through a secure API.",
+    tech: ["Python", "Flask", "SQL", "REST APIs"],
+    github: "https://github.com/Hetsharma5",
+    visual: "dashboard-browser",
   },
 ];

@@ -5,15 +5,14 @@ export interface EducationEntry {
   details: string[];
 }
 
-// Replace with your real education history.
 export const education: EducationEntry[] = [
   {
     degree: "B.Tech, Computer Science & Engineering",
-    school: "Gujarat Technological University",
-    period: "2020 — 2024",
+    school: "Karnavati University, Gandhinagar",
+    period: "Expected April 2027",
     details: [
-      "Focus areas: data structures & algorithms, database systems, operating systems, and computer networks.",
-      "Built and led the mobile app for the university tech fest — 2,000+ downloads in its first week.",
+      "SGPA of 7.70 through the 5th semester.",
+      "Coursework and self-study spanning cloud computing (AWS), machine learning, and IoT development alongside core CS fundamentals.",
     ],
   },
 ];
