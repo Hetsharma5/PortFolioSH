@@ -28,8 +28,8 @@ export const achievements: Achievement[] = [
   },
   {
     icon: "graduationCap",
-    metric: "7.70 SGPA",
-    label: "Through the 5th semester",
+    metric: "7.76 SGPA",
+    label: "Through the 6th semester",
     detail: "B.Tech in Computer Science & Engineering, Karnavati University — expected April 2027.",
   },
 ];

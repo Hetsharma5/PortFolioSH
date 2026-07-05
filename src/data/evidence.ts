@@ -114,8 +114,30 @@ export const evidenceFiles: EvidenceFile[] = [
     visual: "dashboard-browser",
   },
   {
-    id: "spendo",
+    id: "kisansarthi",
     number: "EF-005",
+    title: "KisanSarthi",
+    mission:
+      "Build a mobile-first web application that helps Indian farmers optimize their field layouts, predict yields, and estimate profits — turning raw land boundaries into actionable planting blueprints.",
+    problem:
+      "Farmers and agricultural planners lack an accessible, visual tool to plan crop spacing, calculate precise input requirements (seeds, fertilizer), and forecast profitability before they begin planting.",
+    status: "CLOSED",
+    investigation: [
+      "Interactive map-based field drawing using Leaflet + Turf.js for real-time geospatial area computation (sq meters, acres, hectares)",
+      "A crop modeling engine that calculates row/plant counts, seed rates, fertilizer needs, expected yield, revenue, cost, and net profit from a configurable crop database",
+      "Express + MongoDB backend with user and land persistence APIs to save and retrieve planting blueprints",
+    ],
+    solution:
+      "Developed a full-stack, 4-step wizard application — field boundary drawing, crop selection, layout generation, and a financial results dashboard — with a React 19 frontend, Express backend, and MongoDB storage.",
+    outcome:
+      "A working hackathon prototype delivering end-to-end crop planning from polygon input to profit estimation.",
+    tech: ["React 19", "Vite", "Tailwind CSS", "Leaflet + Turf.js", "Express", "MongoDB"],
+    github: "https://github.com/Hetsharma5",
+    visual: "dashboard-browser",
+  },
+  {
+    id: "spendo",
+    number: "EF-006",
     title: "Spendo — Personal Finance Tracker",
     mission: "Give people a simple, trustworthy way to track personal expenses.",
     problem:
