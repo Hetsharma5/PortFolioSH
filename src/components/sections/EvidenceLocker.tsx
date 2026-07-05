@@ -2,54 +2,64 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tag } from "@/components/ui/Tag";
-import { caseFiles, type CaseFile } from "@/data/cases";
+import { evidenceFiles, type EvidenceFile } from "@/data/evidence";
 import { icons } from "@/icons";
-import { CaseVisual } from "./CaseVisual";
-import styles from "./CaseFiles.module.css";
+import { EvidenceVisual } from "./EvidenceVisual";
+import styles from "./EvidenceLocker.module.css";
 
-function CaseHeader({ caseFile }: { caseFile: CaseFile }) {
+function EvidenceHeader({ file }: { file: EvidenceFile }) {
   return (
     <div className={styles.caseHead}>
-      <span className={styles.caseNumber}>CASE Nº {caseFile.number}</span>
+      <span className={styles.caseNumber}>EVIDENCE FILE Nº {file.number}</span>
       <span
-        className={`${styles.caseStatus} ${caseFile.status === "ACTIVE" ? styles.statusActive : ""}`}
+        className={`${styles.caseStatus} ${file.status === "ACTIVE" ? styles.statusActive : ""}`}
       >
         <i aria-hidden="true" />
-        {caseFile.status}
+        {file.status}
       </span>
     </div>
   );
 }
 
-function CaseBody({ caseFile, featured = false }: { caseFile: CaseFile; featured?: boolean }) {
+function EvidenceBody({ file, featured = false }: { file: EvidenceFile; featured?: boolean }) {
   const GitHub = icons.github;
   const External = icons.externalLink;
 
   return (
     <div className={`${styles.body} ${featured ? styles.bodyFeatured : ""}`}>
-      <h3 className={styles.title}>{caseFile.title}</h3>
+      <h3 className={styles.title}>{file.title}</h3>
 
       <div className={styles.block}>
         <p className={styles.blockLabel}>Mission</p>
-        <p className={styles.mission}>{caseFile.mission}</p>
+        <p className={styles.mission}>{file.mission}</p>
       </div>
 
       <div className={styles.block}>
-        <p className={styles.blockLabel}>Challenges</p>
+        <p className={styles.blockLabel}>Problem</p>
+        <p className={styles.mission}>{file.problem}</p>
+      </div>
+
+      <div className={styles.block}>
+        <p className={styles.blockLabel}>Investigation</p>
         <ul className={styles.challenges}>
-          {caseFile.challenges.map((challenge) => (
-            <li key={challenge}>{challenge}</li>
+          {file.investigation.map((step) => (
+            <li key={step}>{step}</li>
           ))}
         </ul>
       </div>
 
       <div className={styles.block}>
+        <p className={styles.blockLabel}>Solution</p>
+        <p className={styles.mission}>{file.solution}</p>
+      </div>
+
+      <div className={styles.block}>
         <p className={styles.blockLabel}>Outcome</p>
-        <p className={styles.outcome}>{caseFile.outcome}</p>
+        <p className={styles.outcome}>{file.outcome}</p>
       </div>
 
       <ul className={styles.tech}>
-        {caseFile.tech.map((tech) => (
+        {file.tech.map((tech) => (
           <li key={tech}>
             <Tag>{tech}</Tag>
           </li>
@@ -57,13 +67,13 @@ function CaseBody({ caseFile, featured = false }: { caseFile: CaseFile; featured
       </ul>
 
       <div className={styles.actions}>
-        <a href={caseFile.github} target="_blank" rel="noreferrer" className={styles.action}>
+        <a href={file.github} target="_blank" rel="noreferrer" className={styles.action}>
           <GitHub size={15} />
-          Open Case
+          Open File
         </a>
-        {caseFile.demo && (
+        {file.demo && (
           <a
-            href={caseFile.demo}
+            href={file.demo}
             target="_blank"
             rel="noreferrer"
             className={`${styles.action} ${styles.actionPrimary}`}
@@ -77,28 +87,28 @@ function CaseBody({ caseFile, featured = false }: { caseFile: CaseFile; featured
   );
 }
 
-export function CaseFiles() {
-  const featured = caseFiles.filter((caseFile) => caseFile.featured);
-  const rest = caseFiles.filter((caseFile) => !caseFile.featured);
+export function EvidenceLocker() {
+  const featured = evidenceFiles.filter((file) => file.featured);
+  const rest = evidenceFiles.filter((file) => !file.featured);
 
   return (
-    <section id="cases" className="section">
+    <section id="evidence" className="section">
       <div className="container">
         <SectionHeading
           index="03"
-          eyebrow="Case Files"
-          title="Cases I've opened, worked & closed."
+          eyebrow="Evidence Locker"
+          title="Projects I've built, examined & closed."
           lead="Every project starts as a question. These are the ones I saw through — from first lead to shipped outcome."
         />
 
-        {featured.map((caseFile) => (
-          <Reveal key={caseFile.id}>
+        {featured.map((file) => (
+          <Reveal key={file.id}>
             <GlassCard interactive className={styles.featuredCard}>
-              <CaseHeader caseFile={caseFile} />
+              <EvidenceHeader file={file} />
               <div className={styles.featuredGrid}>
-                <CaseBody caseFile={caseFile} featured />
+                <EvidenceBody file={file} featured />
                 <div className={styles.featuredVisual}>
-                  <CaseVisual kind={caseFile.visual} />
+                  <EvidenceVisual kind={file.visual} />
                 </div>
               </div>
             </GlassCard>
@@ -106,14 +116,14 @@ export function CaseFiles() {
         ))}
 
         <div className={styles.grid}>
-          {rest.map((caseFile, i) => (
-            <Reveal key={caseFile.id} delay={(i % 2) * 80}>
+          {rest.map((file, i) => (
+            <Reveal key={file.id} delay={(i % 2) * 80}>
               <GlassCard interactive className={styles.card}>
-                <CaseHeader caseFile={caseFile} />
+                <EvidenceHeader file={file} />
                 <div className={styles.visual}>
-                  <CaseVisual kind={caseFile.visual} crop />
+                  <EvidenceVisual kind={file.visual} crop />
                 </div>
-                <CaseBody caseFile={caseFile} />
+                <EvidenceBody file={file} />
               </GlassCard>
             </Reveal>
           ))}

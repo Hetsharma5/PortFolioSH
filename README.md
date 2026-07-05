@@ -23,10 +23,11 @@ npm run preview    # serve the production build → http://localhost:4173
 | `src/data/profile.ts` | Name, roles, statement, email, socials, footer quote |
 | `src/data/about.ts` | About story + the "Subject Profile" dossier card |
 | `src/data/toolkit.ts` | Investigation Toolkit categories and tags |
-| `src/data/cases.ts` | Case Files — number, mission, challenges, outcome, links |
+| `src/data/evidence.ts` | Evidence Locker — file number, mission, problem, investigation, solution, outcome, links |
 | `src/data/chapters.ts` | Field Experience chapter timeline |
 | `src/data/education.ts` | Education |
 | `src/data/lab.ts` | Cyber Lab interest topics (framed as self-learning) |
+| `src/data/notebook.ts` | The Investigator's Notebook — forensic-science-flavored reasoning topics (personal interest, not a professional claim) |
 | `src/data/gaming.ts` | Current Side Quest save-file cards |
 | `src/data/achievements.ts` | Achievements stat cards |
 | `src/data/nav.ts` | Navbar + command-palette sections |
@@ -34,11 +35,11 @@ npm run preview    # serve the production build → http://localhost:4173
 Also update the meta/OG tags, canonical URL, and JSON-LD in `index.html` before deploying,
 and replace the placeholder social/repo URLs in the data files.
 
-### Case visuals
+### Evidence visuals
 
-Case cards use hand-drawn CSS mock screens (`CaseVisual.tsx`) so the site ships with zero image
-assets. To use real screenshots, replace `<CaseVisual …>` in
-`src/components/sections/CaseFiles.tsx` with `<img src="…" alt="…" loading="lazy" />`.
+Evidence cards use hand-drawn CSS mock screens (`EvidenceVisual.tsx`) so the site ships with zero
+image assets. To use real screenshots, replace `<EvidenceVisual …>` in
+`src/components/sections/EvidenceLocker.tsx` with `<img src="…" alt="…" loading="lazy" />`.
 
 ## Hidden interactions
 
@@ -74,8 +75,8 @@ src/
    ├─ ui/          ← Reveal, Button, SectionHeading, Tag, GlassCard
    ├─ layout/      ← Navbar, Footer, BackToTop
    ├─ system/      ← IntroLoader, CommandPalette, Toaster, Modal, EasterEggs
-   └─ sections/    ← Hero, About, Toolkit, CaseFiles, Experience, Education,
-                     CyberLab, Gaming, Achievements, Contact
+   └─ sections/    ← Hero, About, Toolkit, EvidenceLocker, Experience, Education,
+                     CyberLab, InvestigatorsNotebook, Gaming, Achievements, Contact
 ```
 
 ## Deploying

@@ -12,7 +12,7 @@ export function Gaming() {
     <section id="gaming" className="section">
       <div className="container">
         <SectionHeading
-          index="07"
+          index="08"
           eyebrow="Current Side Quest"
           title="Every good detective has a hobby."
           lead={gaming.lead}

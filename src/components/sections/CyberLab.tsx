@@ -13,7 +13,7 @@ export function CyberLab() {
           index="06"
           eyebrow="Cyber Lab"
           title="Where I break things to understand them."
-          lead="Security and forensics are my active areas of study — labs, reading, and experiments on my own systems. Interests and self-learning, not certifications."
+          lead="Security is where a lot of my active study goes — labs, reading, and experiments on my own systems. Interests and self-learning, not certifications."
         />
 
         <div className={styles.grid}>

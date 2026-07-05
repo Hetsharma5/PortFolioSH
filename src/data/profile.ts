@@ -9,7 +9,7 @@ export const profile = {
   firstName: "Het",
   initials: "SH",
   role: "Software Engineer",
-  roles: ["Software Engineer", "Digital Problem Solver", "Cybersecurity Enthusiast"],
+  roles: ["Software Engineer", "Full-Stack & Mobile Developer", "Cybersecurity Enthusiast", "Curious Problem Solver"],
   statement:
     "I enjoy investigating complex systems, securing applications, and building software that solves real-world problems.",
   location: "India · Working worldwide",

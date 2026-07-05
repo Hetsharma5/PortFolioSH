@@ -1,12 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { CaseVisualKind } from "@/data/cases";
-import styles from "./CaseVisual.module.css";
+import type { EvidenceVisualKind } from "@/data/evidence";
+import styles from "./EvidenceVisual.module.css";
 
 /*
- * Decorative, hand-drawn mock screens ("evidence") for case-file cards.
- * Everything here is presentational skeleton UI, so the whole tree is
- * aria-hidden. Swap for real screenshots by replacing <CaseVisual /> with
- * an <img loading="lazy" /> in CaseFiles.tsx when you have them.
+ * Decorative, hand-drawn mock screens for evidence-file cards. Everything
+ * here is presentational skeleton UI, so the whole tree is aria-hidden.
+ * Swap for real screenshots by replacing <EvidenceVisual /> with an
+ * <img loading="lazy" /> in EvidenceLocker.tsx when you have them.
  */
 
 type Tone = "dim" | "mid" | "accent";
@@ -171,13 +171,13 @@ function BrowserFrame({ children, crop }: { children: ReactNode; crop: boolean }
   );
 }
 
-interface CaseVisualProps {
-  kind: CaseVisualKind;
+interface EvidenceVisualProps {
+  kind: EvidenceVisualKind;
   /** Crop the frame against the bottom edge of its container (compact cards). */
   crop?: boolean;
 }
 
-export function CaseVisual({ kind, crop = false }: CaseVisualProps) {
+export function EvidenceVisual({ kind, crop = false }: EvidenceVisualProps) {
   const isPhone = kind === "commerce-phone" || kind === "travel-phone";
   return (
     <div className={`${styles.root} ${crop ? styles.rootCrop : ""}`} aria-hidden="true">

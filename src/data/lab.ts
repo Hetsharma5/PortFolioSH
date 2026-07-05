@@ -12,19 +12,14 @@ export interface LabTopic {
  */
 export const labTopics: LabTopic[] = [
   {
+    topic: "Secure Coding",
+    icon: "code",
+    note: "Validate at the edges, least privilege by default — habits that make bugs boring instead of dangerous.",
+  },
+  {
     topic: "Application Security",
     icon: "shield",
     note: "Studying how real apps fail: injection, broken auth, misconfiguration.",
-  },
-  {
-    topic: "OWASP",
-    icon: "bookOpen",
-    note: "The Top 10 as a running checklist for everything I ship.",
-  },
-  {
-    topic: "Secure Coding",
-    icon: "code",
-    note: "Validate at the edges, least privilege by default.",
   },
   {
     topic: "Authentication",
@@ -32,29 +27,29 @@ export const labTopics: LabTopic[] = [
     note: "Shipped revocable JWTs in production; exploring OAuth and session design.",
   },
   {
+    topic: "Authorization",
+    icon: "lock",
+    note: "Role-based access and scoped tokens — the middleware that stops an authenticated user from doing too much.",
+  },
+  {
+    topic: "OWASP Top 10",
+    icon: "bookOpen",
+    note: "The running checklist for everything I ship, not just something I read once.",
+  },
+  {
+    topic: "API Security",
+    icon: "server",
+    note: "Headers, sanitization, and rate-aware design — the boring parts that actually matter.",
+  },
+  {
     topic: "Rate Limiting",
     icon: "zap",
     note: "Layered global and per-route limiters, tested against my own API.",
   },
   {
-    topic: "API Security",
-    icon: "lock",
-    note: "Headers, sanitization, and the boring parts that actually matter.",
-  },
-  {
-    topic: "Network Fundamentals",
-    icon: "globe",
-    note: "TCP/IP, DNS, TLS — traced packet by packet in a home lab.",
-  },
-  {
-    topic: "Digital Forensics",
-    icon: "search",
-    note: "Logs and artifacts as evidence; timeline reconstruction for fun.",
-  },
-  {
-    topic: "Threat Analysis",
-    icon: "crosshair",
-    note: "Thinking like an attacker to design like a defender.",
+    topic: "Secure Architectures",
+    icon: "gitBranch",
+    note: "Designing systems so one compromised component doesn't mean a compromised system.",
   },
   {
     topic: "Linux",
@@ -62,8 +57,13 @@ export const labTopics: LabTopic[] = [
     note: "Daily driver for servers, labs, and everything in between.",
   },
   {
-    topic: "Ethical Security Research",
-    icon: "eye",
-    note: "Responsible-disclosure mindset. My own targets only.",
+    topic: "Networking",
+    icon: "globe",
+    note: "TCP/IP, DNS, TLS — traced packet by packet in a home lab.",
+  },
+  {
+    topic: "Cloud Security",
+    icon: "cloud",
+    note: "IAM policies, least-privilege roles, and the ways a misconfigured bucket becomes a headline.",
   },
 ];

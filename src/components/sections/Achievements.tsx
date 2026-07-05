@@ -9,7 +9,7 @@ export function Achievements() {
   return (
     <section id="achievements" className="section">
       <div className="container">
-        <SectionHeading index="08" eyebrow="Achievements" title="Evidence of cases closed." />
+        <SectionHeading index="09" eyebrow="Achievements" title="Evidence of cases closed." />
 
         <div className={styles.grid}>
           {achievements.map((achievement, i) => {

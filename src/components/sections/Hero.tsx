@@ -100,9 +100,9 @@ export function Hero() {
 
         <Reveal delay={370}>
           <div className={styles.actions}>
-            <Button href="#cases">
+            <Button href="#evidence">
               <Folder size={17} />
-              Open Case Files
+              Open Evidence Locker
             </Button>
             <Button href="#contact" variant="ghost">
               Open New Investigation
