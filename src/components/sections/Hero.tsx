@@ -52,6 +52,172 @@ function NetworkBackdrop() {
   );
 }
 
+/**
+ * Living constellation behind the hero — drifting accent nodes linked by
+ * faint lines. The cursor becomes part of the network: nearby nodes lean
+ * toward it and wire themselves to it. One canvas, one rAF loop; work is
+ * skipped while the hero is off-screen. Colors follow --accent-rgb, so
+ * Investigation Mode turns the whole field amber.
+ */
+function ParticleField() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || prefersReducedMotion()) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let width = 0;
+    let height = 0;
+
+    interface Node {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      r: number;
+      tw: number;
+    }
+    let nodes: Node[] = [];
+    const mouse = { x: -9999, y: -9999 };
+
+    const resize = () => {
+      const rect = parent.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.max(24, Math.min(90, Math.floor((width * height) / 16000)));
+      nodes = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: 0.8 + Math.random() * 1.7,
+        tw: Math.random() * Math.PI * 2,
+      }));
+    };
+
+    let accent = "62, 207, 142";
+    const readAccent = () => {
+      const value = getComputedStyle(document.documentElement)
+        .getPropertyValue("--accent-rgb")
+        .trim();
+      if (value) accent = value;
+    };
+    readAccent();
+
+    const LINK = 130;
+    const REACH = 220;
+    let paused = false;
+    let frame = 0;
+    let raf = 0;
+
+    const step = () => {
+      raf = requestAnimationFrame(step);
+      if (paused) return;
+      if (++frame % 90 === 0) readAccent();
+
+      ctx.clearRect(0, 0, width, height);
+
+      for (const node of nodes) {
+        node.x += node.vx;
+        node.y += node.vy;
+        node.tw += 0.02;
+        const dx = mouse.x - node.x;
+        const dy = mouse.y - node.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < REACH && dist > 1) {
+          node.x += (dx / dist) * 0.3;
+          node.y += (dy / dist) * 0.3;
+        }
+        if (node.x < -20) node.x = width + 20;
+        if (node.x > width + 20) node.x = -20;
+        if (node.y < -20) node.y = height + 20;
+        if (node.y > height + 20) node.y = -20;
+      }
+
+      ctx.lineWidth = 1;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < LINK * LINK) {
+            const alpha = (1 - Math.sqrt(d2) / LINK) * 0.15;
+            ctx.strokeStyle = `rgba(${accent}, ${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+        // Wire nearby nodes to the cursor — the visitor joins the network.
+        const mdx = a.x - mouse.x;
+        const mdy = a.y - mouse.y;
+        const md = Math.hypot(mdx, mdy);
+        if (md < REACH) {
+          const alpha = (1 - md / REACH) * 0.35;
+          ctx.strokeStyle = `rgba(${accent}, ${alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+
+      for (const node of nodes) {
+        const glow = 0.3 + (Math.sin(node.tw) + 1) * 0.25;
+        ctx.fillStyle = `rgba(${accent}, ${glow})`;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      paused = !entry.isIntersecting;
+    });
+    observer.observe(canvas);
+
+    const onMove = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = event.clientX - rect.left;
+      mouse.y = event.clientY - rect.top;
+    };
+    const onLeave = () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    };
+
+    // The backdrop layer is pointer-events: none, so track globally.
+    window.addEventListener("resize", resize);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    resize();
+    raf = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className={styles.particles} aria-hidden="true" />;
+}
+
 /** anime.js-driven typewriter that cycles through the profile roles. */
 function useTypewriter(enabled: boolean) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -142,7 +308,8 @@ export function Hero() {
     };
   }, []);
 
-  // Mouse-reactive parallax on the backdrop layers.
+  // Mouse-reactive parallax on the backdrop layers — one rAF lerp loop,
+  // one transform write per layer per frame.
   useEffect(() => {
     const hero = heroRef.current;
     const net = networkRef.current;
@@ -151,44 +318,37 @@ export function Hero() {
     if (prefersReducedMotion()) return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const layers = [net, glow];
+    let targetX = 0;
+    let targetY = 0;
+    let x = 0;
+    let y = 0;
+    let raf = 0;
+
+    const loop = () => {
+      x += (targetX - x) * 0.06;
+      y += (targetY - y) * 0.06;
+      net.style.transform = `translate3d(${x * -26}px, ${y * -18}px, 0)`;
+      glow.style.transform = `translate3d(${x * 36}px, ${y * 26}px, 0)`;
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+
     const onMove = (event: MouseEvent) => {
       const rect = hero.getBoundingClientRect();
-      const dx = (event.clientX - rect.left) / rect.width - 0.5;
-      const dy = (event.clientY - rect.top) / rect.height - 0.5;
-      anime.remove(layers);
-      anime({
-        targets: net,
-        translateX: dx * -26,
-        translateY: dy * -18,
-        duration: 1000,
-        easing: "easeOutQuad",
-      });
-      anime({
-        targets: glow,
-        translateX: dx * 36,
-        translateY: dy * 26,
-        duration: 1400,
-        easing: "easeOutQuad",
-      });
+      targetX = (event.clientX - rect.left) / rect.width - 0.5;
+      targetY = (event.clientY - rect.top) / rect.height - 0.5;
     };
     const onLeave = () => {
-      anime.remove(layers);
-      anime({
-        targets: layers,
-        translateX: 0,
-        translateY: 0,
-        duration: 900,
-        easing: "easeOutQuad",
-      });
+      targetX = 0;
+      targetY = 0;
     };
 
-    hero.addEventListener("mousemove", onMove);
+    hero.addEventListener("mousemove", onMove, { passive: true });
     hero.addEventListener("mouseleave", onLeave);
     return () => {
+      cancelAnimationFrame(raf);
       hero.removeEventListener("mousemove", onMove);
       hero.removeEventListener("mouseleave", onLeave);
-      anime.remove(layers);
     };
   }, []);
 
@@ -197,7 +357,7 @@ export function Hero() {
       <div ref={glowRef} className={styles.glow} aria-hidden="true" />
       <div className={styles.dotGrid} aria-hidden="true" />
       <div ref={networkRef} className={styles.networkLayer} aria-hidden="true">
-        <NetworkBackdrop />
+        {reduced ? <NetworkBackdrop /> : <ParticleField />}
       </div>
       <div className={styles.scanlines} aria-hidden="true" />
 

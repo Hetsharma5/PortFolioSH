@@ -1,34 +1,63 @@
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tag } from "@/components/ui/Tag";
 import { evidenceFiles, type EvidenceFile } from "@/data/evidence";
 import { icons } from "@/icons";
-import { anime, prefersReducedMotion, useStaggerReveal } from "@/lib/animate";
+import { prefersReducedMotion, useStaggerReveal } from "@/lib/animate";
 import { EvidenceVisual } from "./EvidenceVisual";
 import styles from "./EvidenceLocker.module.css";
 
-/** Premium 3D hover — the card tilts toward the cursor (max ±5deg). */
+/**
+ * Premium 3D hover — the card tilts toward the cursor (max ±4deg).
+ * A rAF lerp loop runs only while the pointer is over the card, then eases
+ * back to flat and stops — no per-mousemove animation instances.
+ */
 function TiltCard({ children, className }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const state = useRef({ raf: 0, targetX: 0, targetY: 0, x: 0, y: 0, settling: false });
+
+  const step = () => {
+    const el = ref.current;
+    const s = state.current;
+    if (!el) return;
+    s.x += (s.targetX - s.x) * 0.14;
+    s.y += (s.targetY - s.y) * 0.14;
+    if (s.settling && Math.abs(s.x) < 0.02 && Math.abs(s.y) < 0.02) {
+      el.style.transform = "";
+      s.x = 0;
+      s.y = 0;
+      s.raf = 0;
+      return;
+    }
+    el.style.transform = `rotateX(${s.x}deg) rotateY(${s.y}deg)`;
+    s.raf = requestAnimationFrame(step);
+  };
 
   const onMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
     if (!el || prefersReducedMotion()) return;
+    const s = state.current;
     const rect = el.getBoundingClientRect();
-    const rotateX = ((event.clientY - rect.top) / rect.height - 0.5) * -8;
-    const rotateY = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
-    anime.remove(el);
-    anime({ targets: el, rotateX, rotateY, duration: 200, easing: "easeOutQuad" });
+    s.targetX = ((event.clientY - rect.top) / rect.height - 0.5) * -8;
+    s.targetY = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
+    s.settling = false;
+    if (!s.raf) s.raf = requestAnimationFrame(step);
   };
 
   const onLeave = () => {
-    const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
-    anime.remove(el);
-    anime({ targets: el, rotateX: 0, rotateY: 0, duration: 650, easing: "easeOutCubic" });
+    const s = state.current;
+    s.targetX = 0;
+    s.targetY = 0;
+    s.settling = true;
+    if (!s.raf) s.raf = requestAnimationFrame(step);
   };
+
+  useEffect(() => {
+    const s = state.current;
+    return () => cancelAnimationFrame(s.raf);
+  }, []);
 
   return (
     <div

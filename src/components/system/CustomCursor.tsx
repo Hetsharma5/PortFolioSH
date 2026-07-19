@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { anime, prefersReducedMotion } from "@/lib/animate";
+import { prefersReducedMotion } from "@/lib/animate";
 import styles from "./CustomCursor.module.css";
 
 function cursorEnabled(): boolean {
@@ -11,7 +11,9 @@ function cursorEnabled(): boolean {
 
 /**
  * Desktop-only investigator crosshair: a precise accent dot plus a lagging
- * ring eased by anime.js. The ring dilates over interactive elements.
+ * ring. The ring trails via a single rAF lerp loop — one transform write per
+ * frame, so it never contends with the main thread the way per-event
+ * animations would. The ring dilates over interactive elements.
  */
 export function CustomCursor() {
   const [enabled] = useState(cursorEnabled);
@@ -25,24 +27,33 @@ export function CustomCursor() {
     if (!dot || !ringWrap) return;
 
     document.documentElement.classList.add("custom-cursor");
+
+    let targetX = -100;
+    let targetY = -100;
+    let ringX = -100;
+    let ringY = -100;
     let visible = false;
+    let raf = 0;
+
+    const loop = () => {
+      ringX += (targetX - ringX) * 0.16;
+      ringY += (targetY - ringY) * 0.16;
+      ringWrap.style.transform = `translate3d(${ringX - 15}px, ${ringY - 15}px, 0)`;
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
 
     const onMove = (event: MouseEvent) => {
-      const { clientX: x, clientY: y } = event;
+      targetX = event.clientX;
+      targetY = event.clientY;
       if (!visible) {
         visible = true;
+        ringX = targetX;
+        ringY = targetY;
         dot.style.opacity = "1";
         ringWrap.style.opacity = "1";
       }
-      dot.style.transform = `translate(${x - 3}px, ${y - 3}px)`;
-      anime.remove(ringWrap);
-      anime({
-        targets: ringWrap,
-        translateX: x - 15,
-        translateY: y - 15,
-        duration: 380,
-        easing: "easeOutExpo",
-      });
+      dot.style.transform = `translate3d(${targetX - 3}px, ${targetY - 3}px, 0)`;
     };
 
     const onOver = (event: MouseEvent) => {
@@ -62,11 +73,11 @@ export function CustomCursor() {
     window.addEventListener("mouseover", onOver, { passive: true });
     document.documentElement.addEventListener("mouseleave", onLeave);
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
       document.documentElement.removeEventListener("mouseleave", onLeave);
       document.documentElement.classList.remove("custom-cursor");
-      anime.remove(ringWrap);
     };
   }, [enabled]);
 

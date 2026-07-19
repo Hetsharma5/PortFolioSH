@@ -10,6 +10,7 @@
   box-shadow: var(--glow-shadow);
   opacity: 0;
   pointer-events: none;
+  will-change: transform;
 }
 
 .ringWrap {
@@ -21,6 +22,7 @@
   height: 30px;
   opacity: 0;
   pointer-events: none;
+  will-change: transform;
 }
 
 .ring {

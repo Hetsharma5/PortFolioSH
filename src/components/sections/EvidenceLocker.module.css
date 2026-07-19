@@ -180,6 +180,11 @@
   pointer-events: none;
 }
 
+/* Clear the corner ribbon so the status readout isn't covered. */
+.featuredCard .caseHead {
+  padding-right: 104px;
+}
+
 .featuredGrid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
