@@ -5,9 +5,47 @@
 }
 
 .card {
+  position: relative;
   display: flex;
   gap: 20px;
   padding: 28px 32px;
+  overflow: hidden;
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* Registrar's seal — a faint double-ring stamp in the corner. */
+.seal {
+  position: absolute;
+  right: 22px;
+  bottom: -18px;
+  width: 84px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px double rgba(var(--accent-rgb), 0.5);
+  border-radius: 50%;
+  transform: rotate(-14deg);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: rgba(var(--accent-rgb), 0.55);
+  opacity: 0.22;
+  pointer-events: none;
+  user-select: none;
+}
+
+.seal::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px dashed rgba(var(--accent-rgb), 0.5);
+  border-radius: 50%;
 }
 
 .iconWrap {

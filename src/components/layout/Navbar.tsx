@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { navItems, spyIds } from "@/data/nav";
 import { profile } from "@/data/profile";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { useScrolled } from "@/hooks/useScrolled";
 import { icons } from "@/icons";
+import { anime, prefersReducedMotion } from "@/lib/animate";
 import { emit } from "@/lib/bus";
 import styles from "./Navbar.module.css";
 
@@ -11,6 +12,41 @@ export function Navbar() {
   const scrolled = useScrolled(16);
   const active = useScrollSpy(spyIds);
   const [open, setOpen] = useState(false);
+  const linksRef = useRef<HTMLUListElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
+
+  // Glowing indicator slides under the active section's nav item.
+  useEffect(() => {
+    const links = linksRef.current;
+    const indicator = indicatorRef.current;
+    if (!links || !indicator) return;
+
+    const link = links.querySelector<HTMLAnchorElement>('a[aria-current="true"]');
+    if (!link) {
+      indicator.style.opacity = "0";
+      return;
+    }
+    const linksRect = links.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    const left = linkRect.left - linksRect.left + 8;
+    const width = Math.max(linkRect.width - 16, 12);
+
+    if (prefersReducedMotion()) {
+      indicator.style.opacity = "1";
+      indicator.style.left = `${left}px`;
+      indicator.style.width = `${width}px`;
+      return;
+    }
+    anime.remove(indicator);
+    anime({
+      targets: indicator,
+      left,
+      width,
+      opacity: 1,
+      duration: 380,
+      easing: "easeOutCubic",
+    });
+  }, [active]);
 
   // Lock body scroll while the mobile drawer is open.
   useEffect(() => {
@@ -47,7 +83,8 @@ export function Navbar() {
             <span>.</span>
           </a>
 
-          <ul className={styles.links}>
+          <ul ref={linksRef} className={styles.links}>
+            <span ref={indicatorRef} className={styles.indicator} aria-hidden="true" />
             {navItems.map((item) => (
               <li key={item.id}>
                 <a

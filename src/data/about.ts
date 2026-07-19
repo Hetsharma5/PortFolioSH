@@ -6,12 +6,13 @@ export const about = {
     "That same method shows up in the story-driven games I play in my downtime, where the good ones reward noticing a detail early and understanding why it mattered hours later. Different subjects, same instinct: patience, observation, and reasoning from evidence instead of assumption. It's why debugging a hard bug and untangling a good mystery scratch the exact same itch.",
   ],
   // The "subject profile" card rendered beside the story.
+  // `redacted` rows render as black bars until hovered — declassify on demand.
   dossier: [
     { label: "Alias", value: "SH" },
     { label: "Field", value: "Full-stack & mobile" },
-    { label: "Currently investigating", value: "Application security" },
-    { label: "Method", value: "Evidence first, assumptions last" },
+    { label: "Currently investigating", value: "Application security", redacted: true },
+    { label: "Method", value: "Evidence first, assumptions last", redacted: true },
     { label: "Base of operations", value: "India · remote-friendly" },
     { label: "Status", value: "Open to new cases" },
-  ],
+  ] as { label: string; value: string; redacted?: boolean }[],
 };

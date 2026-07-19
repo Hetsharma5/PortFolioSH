@@ -9,8 +9,39 @@
 }
 
 .card {
+  position: relative;
   height: 100%;
   padding: 26px 28px;
+  overflow: hidden;
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* Holographic sheen drifts across the card on hover. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(var(--accent-rgb), 0.07) 42%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(var(--accent-rgb), 0.07) 58%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  background-position: 120% 50%;
+  opacity: 0;
+  transition: opacity var(--speed) var(--ease);
+}
+
+.card:hover::after {
+  opacity: 1;
+  animation: sheen 1.6s ease-in-out infinite alternate;
 }
 
 .iconWrap {

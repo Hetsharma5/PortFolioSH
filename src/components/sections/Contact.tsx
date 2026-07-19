@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { profile } from "@/data/profile";
 import { icons } from "@/icons";
+import { useStaggerReveal } from "@/lib/animate";
 import styles from "./Contact.module.css";
 
 export function Contact() {
@@ -24,6 +25,7 @@ export function Contact() {
 
   const Mail = icons.mail;
   const CopyIcon = copied ? icons.check : icons.copy;
+  const stackRef = useStaggerReveal<HTMLDivElement>({ step: 130, y: 22 });
 
   return (
     <section id="contact" className="section">
@@ -32,6 +34,11 @@ export function Contact() {
           <div className={styles.panel}>
             <div className={styles.glow} aria-hidden="true" />
 
+            <div ref={stackRef} className={styles.stack}>
+            <p className={styles.secureLine}>
+              <span className={styles.secureDot} aria-hidden="true" />
+              ESTABLISHING SECURE CONNECTION...
+            </p>
             <p className={styles.eyebrow}>
               <span className={styles.index}>FILE 09</span> // CONTACT
             </p>
@@ -69,6 +76,7 @@ export function Contact() {
                 );
               })}
             </ul>
+            </div>
           </div>
         </Reveal>
       </div>

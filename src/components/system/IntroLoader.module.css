@@ -4,16 +4,50 @@
   z-index: 300;
   background: var(--bg);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  transition: opacity 0.4s var(--ease);
+  overflow: hidden;
 }
 
-.leaving {
+/* Falling data cascade — pure CSS columns, revealed mid-sequence. */
+.rain {
+  position: absolute;
+  inset: 0;
   opacity: 0;
   pointer-events: none;
+}
+
+.rainCol {
+  position: absolute;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  white-space: pre;
+  color: rgba(var(--accent-rgb), 0.5);
+  text-shadow: 0 0 8px rgba(var(--accent-rgb), 0.4);
+  animation: rainFall linear infinite;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.035) 0px,
+    rgba(255, 255, 255, 0.035) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+.core {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
 }
 
 .mark {
@@ -32,44 +66,51 @@
 .message {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   color: var(--text-3);
-  animation: msgIn 0.3s var(--ease);
+  opacity: 0;
+  min-height: 1.4em;
+}
+
+.trackRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .track {
-  width: 180px;
-  height: 2px;
-  border-radius: 1px;
+  width: 220px;
+  height: 3px;
+  border-radius: 2px;
   background: var(--border);
   overflow: hidden;
 }
 
 .fill {
   height: 100%;
-  width: 100%;
-  border-radius: 1px;
+  width: 0%;
+  border-radius: 2px;
   background: var(--accent);
-  transform-origin: left;
-  animation: load 1.6s var(--ease) forwards;
+  box-shadow: var(--glow-shadow);
 }
 
-@keyframes load {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
+.percent {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  min-width: 4ch;
+  text-align: right;
 }
 
-@keyframes msgIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.granted {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: var(--accent-bright);
+  text-shadow: var(--glow-text);
+  opacity: 0;
+  min-height: 1.4em;
 }

@@ -3,11 +3,14 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { notebookEntries } from "@/data/notebook";
 import { icons } from "@/icons";
+import { useStaggerReveal } from "@/lib/animate";
 import styles from "./InvestigatorsNotebook.module.css";
 
 export function InvestigatorsNotebook() {
+  const gridRef = useStaggerReveal<HTMLDivElement>({ step: 80, y: 24 });
+
   return (
-    <section id="notebook" className="section">
+    <section id="notebook" className={`section ${styles.zone}`}>
       <div className="container">
         <SectionHeading
           index="07"
@@ -16,22 +19,35 @@ export function InvestigatorsNotebook() {
           lead="Forensic science is a personal reading interest, not a profession — I'm not a forensic scientist or a digital forensics practitioner. What draws me in is the method: observation, evidence, and reasoning that has to survive scrutiny."
         />
 
-        <div className={styles.grid}>
+        <div ref={gridRef} className={styles.grid}>
           {notebookEntries.map((entry, i) => {
             const Icon = icons[entry.icon];
             return (
-              <Reveal key={entry.topic} delay={(i % 3) * 60}>
-                <GlassCard interactive className={styles.card}>
+              <GlassCard key={entry.topic} interactive className={styles.card}>
+                <div className={styles.termBar}>
+                  <span className={styles.dots} aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <span className={styles.index}>NOTE-{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <div className={styles.cardBody}>
                   <div className={styles.head}>
                     <span className={styles.iconWrap}>
                       <Icon size={16} />
                     </span>
-                    <span className={styles.index}>NOTE-{String(i + 1).padStart(2, "0")}</span>
+                    <h3 className={styles.topic}>
+                      <span className={styles.prompt} aria-hidden="true">
+                        &gt;&nbsp;
+                      </span>
+                      {entry.topic}
+                      <span className={styles.cursor} aria-hidden="true" />
+                    </h3>
                   </div>
-                  <h3 className={styles.topic}>{entry.topic}</h3>
                   <p className={styles.note}>{entry.note}</p>
-                </GlassCard>
-              </Reveal>
+                </div>
+              </GlassCard>
             );
           })}
         </div>

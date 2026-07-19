@@ -9,10 +9,48 @@
 }
 
 .card {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
   padding: 22px 24px;
+  overflow: hidden;
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* CRT scanlines over the save slot. */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.025) 0px,
+    rgba(255, 255, 255, 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Loading shimmer sweeps across on hover. */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(100deg, transparent, rgba(var(--accent-rgb), 0.06), transparent);
+  transform: translateX(-140%) skewX(-18deg);
+  pointer-events: none;
+}
+
+.card:hover::before {
+  animation: sweep 0.85s var(--ease);
 }
 
 .head {
@@ -71,16 +109,17 @@
 
 .progress {
   flex: 1;
-  height: 4px;
-  border-radius: 2px;
+  height: 5px;
+  border-radius: 3px;
   background: var(--border);
   overflow: hidden;
 }
 
 .progressFill {
   height: 100%;
-  border-radius: 2px;
-  background: var(--accent);
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  box-shadow: var(--glow-shadow);
 }
 
 .percent {

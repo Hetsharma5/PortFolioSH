@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { allSections } from "@/data/nav";
 import { profile } from "@/data/profile";
 import { icons } from "@/icons";
+import { anime, prefersReducedMotion } from "@/lib/animate";
 import { emit, on, toast, toggleInvestigationMode } from "@/lib/bus";
 import styles from "./CommandPalette.module.css";
 
@@ -17,11 +18,35 @@ export function CommandPalette() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const paletteRef = useRef<HTMLDivElement>(null);
+  const closingRef = useRef(false);
 
   const close = useCallback(() => {
-    setOpen(false);
-    setQuery("");
-    setSelected(0);
+    if (closingRef.current) return;
+    const finish = () => {
+      closingRef.current = false;
+      setOpen(false);
+      setQuery("");
+      setSelected(0);
+    };
+    const palette = paletteRef.current;
+    const overlay = overlayRef.current;
+    if (!palette || !overlay || prefersReducedMotion()) {
+      finish();
+      return;
+    }
+    closingRef.current = true;
+    anime.remove([palette, overlay]);
+    anime({ targets: overlay, opacity: 0, duration: 140, easing: "easeInQuad" });
+    anime({
+      targets: palette,
+      opacity: 0,
+      scale: 0.96,
+      duration: 140,
+      easing: "easeInQuad",
+      complete: finish,
+    });
   }, []);
 
   const items = useMemo<PaletteItem[]>(
@@ -76,7 +101,8 @@ export function CommandPalette() {
     const onKey = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setOpen((value) => !value);
+        if (open) close();
+        else setOpen(true);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -85,10 +111,31 @@ export function CommandPalette() {
       window.removeEventListener("keydown", onKey);
       offBus();
     };
-  }, []);
+  }, [open, close]);
 
+  // HUD boot-in: the panel scales up while results cascade.
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (!open) return;
+    inputRef.current?.focus();
+    const palette = paletteRef.current;
+    if (!palette || prefersReducedMotion()) return;
+
+    const rows = palette.querySelectorAll("li");
+    anime({
+      targets: palette,
+      opacity: [0, 1],
+      scale: [0.95, 1],
+      duration: 220,
+      easing: "easeOutCubic",
+    });
+    anime({
+      targets: rows,
+      opacity: [0, 1],
+      translateX: [-10, 0],
+      delay: anime.stagger(26, { start: 70 }),
+      duration: 260,
+      easing: "easeOutQuad",
+    });
   }, [open]);
 
   useEffect(() => {
@@ -116,8 +163,9 @@ export function CommandPalette() {
   };
 
   return (
-    <div className={styles.overlay} onClick={close}>
+    <div ref={overlayRef} className={styles.overlay} onClick={close}>
       <div
+        ref={paletteRef}
         className={styles.palette}
         role="dialog"
         aria-modal="true"
@@ -128,15 +176,21 @@ export function CommandPalette() {
           <span className={styles.searchIcon}>
             <Search size={16} />
           </span>
-          <input
-            ref={inputRef}
-            className={styles.input}
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            onKeyDown={onInputKey}
-            placeholder="Search case files..."
-            aria-label="Search case files"
-          />
+          <span className={styles.prompt} aria-hidden="true">
+            &gt;
+          </span>
+          <div className={styles.inputWrap}>
+            <input
+              ref={inputRef}
+              className={styles.input}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={onInputKey}
+              placeholder="Search case files..."
+              aria-label="Search case files"
+            />
+            {query === "" && <span className={styles.fakeCaret} aria-hidden="true" />}
+          </div>
           <kbd className={styles.kbd}>esc</kbd>
         </div>
 

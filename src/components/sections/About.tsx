@@ -2,9 +2,12 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { about } from "@/data/about";
+import { useStaggerReveal } from "@/lib/animate";
 import styles from "./About.module.css";
 
 export function About() {
+  const rowsRef = useStaggerReveal<HTMLDListElement>({ step: 110, y: 14 });
+
   return (
     <section id="about" className="section">
       <div className="container">
@@ -25,11 +28,11 @@ export function About() {
                 <span>SUBJECT PROFILE</span>
                 <span className={styles.dossierDot} aria-hidden="true" />
               </div>
-              <dl className={styles.rows}>
+              <dl ref={rowsRef} className={styles.rows}>
                 {about.dossier.map((row) => (
                   <div key={row.label} className={styles.row}>
                     <dt>{row.label}</dt>
-                    <dd>{row.value}</dd>
+                    <dd className={row.redacted ? styles.redacted : undefined}>{row.value}</dd>
                   </div>
                 ))}
               </dl>

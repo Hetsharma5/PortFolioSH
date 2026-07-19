@@ -1,3 +1,15 @@
+/* ---------- 3D tilt scaffolding ---------- */
+.tiltWrap {
+  perspective: 1000px;
+  height: 100%;
+}
+
+.tilt {
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
 /* ---------- Case header strip ---------- */
 .caseHead {
   display: flex;
@@ -9,13 +21,39 @@
   transition: background-color var(--speed) var(--ease);
 }
 
+/* Physical evidence tag — slightly rotated, punched and pinned. */
 .caseNumber {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 20px;
+  border: 1px dashed rgba(var(--accent-rgb), 0.35);
+  border-radius: 4px;
+  background: rgba(var(--accent-rgb), 0.05);
+  transform: rotate(-1.5deg);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   color: var(--text-3);
-  transition: color var(--speed) var(--ease);
+  transition:
+    color var(--speed) var(--ease),
+    border-color var(--speed) var(--ease);
+}
+
+/* The tag's punched pin hole. */
+.caseNumber::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(var(--accent-rgb), 0.5);
+  background: var(--bg);
 }
 
 .caseStatus {
@@ -41,7 +79,7 @@
 
 .statusActive i {
   background: var(--accent);
-  animation: blink 2.2s var(--ease) infinite;
+  animation: statusPulse 2s var(--ease) infinite;
 }
 
 /* "Opening the file" — the header warms up when the card is hovered. */
@@ -53,12 +91,93 @@
 .featuredCard:hover .caseNumber,
 .card:hover .caseNumber {
   color: var(--accent);
+  border-color: rgba(var(--accent-rgb), 0.6);
+}
+
+/* ---------- Shared card chrome ---------- */
+.card,
+.featuredCard {
+  position: relative;
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* Light sweep across the card face on hover. */
+.card::before,
+.featuredCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.055), transparent);
+  transform: translateX(-140%) skewX(-18deg);
+  pointer-events: none;
+}
+
+.card:hover::before,
+.featuredCard:hover::before {
+  animation: sweep 0.9s var(--ease);
 }
 
 /* ---------- Featured card ---------- */
+.featuredTilt {
+  margin-bottom: 24px;
+  transform: scale(1.02);
+}
+
 .featuredCard {
   overflow: hidden;
-  margin-bottom: 24px;
+}
+
+/* Rotating accent ring traced around the featured card's border. */
+.featuredCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--angle),
+    rgba(var(--accent-rgb), 0.75),
+    transparent 22%,
+    rgba(var(--accent-rgb), 0.2) 46%,
+    transparent 68%,
+    rgba(var(--accent-rgb), 0.75)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: spinAngle 7s linear infinite;
+  pointer-events: none;
+}
+
+.ribbon {
+  position: absolute;
+  top: 20px;
+  right: -34px;
+  z-index: 3;
+  transform: rotate(45deg);
+  padding: 4px 40px;
+  background: var(--accent);
+  color: #06120c;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+  box-shadow: var(--glow-shadow);
+  pointer-events: none;
 }
 
 .featuredGrid {
@@ -196,12 +315,14 @@
   transition:
     border-color var(--speed) var(--ease),
     background-color var(--speed) var(--ease),
+    box-shadow var(--speed) var(--ease),
     transform var(--speed) var(--ease);
 }
 
 .action:hover {
   border-color: var(--accent);
   transform: translateY(-1px);
+  box-shadow: var(--glow-shadow);
 }
 
 .actionPrimary {
@@ -212,11 +333,17 @@
 
 .actionPrimary:hover {
   background: var(--accent-bright);
-  box-shadow: var(--shadow-accent);
+  box-shadow:
+    var(--shadow-accent),
+    var(--glow-shadow);
 }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 880px) {
+  .featuredTilt {
+    transform: none;
+  }
+
   .featuredGrid {
     grid-template-columns: 1fr;
   }

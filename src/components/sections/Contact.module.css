@@ -23,6 +23,30 @@
   pointer-events: none;
 }
 
+.stack {
+  position: relative;
+}
+
+/* Secure-connection flavor line with a blinking transmit dot. */
+.secureLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 22px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  color: var(--text-3);
+}
+
+.secureDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: statusPulse 1.6s var(--ease) infinite;
+}
+
 .eyebrow {
   position: relative;
   font-family: var(--font-mono);
@@ -64,6 +88,7 @@
 }
 
 .copyButton {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -82,8 +107,29 @@
 
 .copyButton:hover {
   border-color: var(--accent);
-  color: var(--text-1);
+  color: var(--accent-bright);
   background: var(--glass-hover);
+  text-shadow: var(--glow-text);
+  box-shadow: var(--glow-shadow);
+}
+
+/* Underline trace — sweeps 0% → 100% under the email on hover. */
+.copyButton::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 7px;
+  height: 1px;
+  background: var(--accent);
+  box-shadow: var(--glow-shadow);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+
+.copyButton:hover::after {
+  transform: scaleX(1);
 }
 
 .socials {
@@ -105,13 +151,15 @@
   transition:
     color var(--speed) var(--ease),
     border-color var(--speed) var(--ease),
-    transform var(--speed) var(--ease);
+    transform var(--speed) var(--ease),
+    box-shadow var(--speed) var(--ease);
 }
 
 .socials a:hover {
-  color: var(--text-1);
-  border-color: var(--border-strong);
+  color: var(--accent-bright);
+  border-color: rgba(var(--accent-rgb), 0.45);
   transform: translateY(-2px);
+  box-shadow: var(--glow-shadow);
 }
 
 @media (max-width: 480px) {

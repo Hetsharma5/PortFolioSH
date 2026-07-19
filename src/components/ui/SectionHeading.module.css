@@ -10,7 +10,7 @@
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   margin-bottom: 16px;
 }
@@ -28,8 +28,21 @@
 }
 
 .title {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: clamp(1.875rem, 4.5vw, 2.875rem);
   font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+/* Accent rule under the title — a case-file divider. */
+.title::after {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 3px;
+  margin-top: 18px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  box-shadow: var(--glow-shadow);
 }
 
 .lead {

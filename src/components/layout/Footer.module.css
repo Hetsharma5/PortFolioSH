@@ -1,5 +1,6 @@
 .footer {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(var(--accent-rgb), 0.14);
+  box-shadow: 0 -1px 24px rgba(var(--accent-rgb), 0.06);
   padding-block: 56px 32px;
 }
 
@@ -96,9 +97,10 @@
 }
 
 .socials a:hover {
-  color: var(--text-1);
-  border-color: var(--border-strong);
+  color: var(--accent-bright);
+  border-color: rgba(var(--accent-rgb), 0.45);
   transform: translateY(-2px);
+  box-shadow: var(--glow-shadow);
 }
 
 .bottom {
@@ -124,4 +126,15 @@
   padding: 2px 7px;
   border: 1px solid var(--border);
   border-radius: 5px;
+}
+
+.endOfFile {
+  margin-top: 36px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.3em;
+  color: var(--text-3);
+  opacity: 0.45;
+  user-select: none;
 }

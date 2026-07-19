@@ -1,4 +1,5 @@
 .button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -28,18 +29,54 @@
 
 .primary:hover {
   background: var(--accent-bright);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-accent);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow:
+    var(--shadow-accent),
+    var(--glow-shadow);
 }
 
 .ghost {
-  background: var(--glass);
+  background: var(--glass-bg);
   border: 1px solid var(--border-strong);
   color: var(--text-1);
 }
 
+/* Neon circuit trace — a conic highlight orbits the border on hover. */
+.ghost::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0%,
+    transparent 62%,
+    var(--accent) 82%,
+    var(--accent-bright) 88%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--speed) var(--ease);
+  pointer-events: none;
+}
+
 .ghost:hover {
   background: var(--glass-hover);
-  border-color: var(--accent);
+  border-color: rgba(var(--accent-rgb), 0.4);
   transform: translateY(-1px);
+  box-shadow: var(--glow-shadow);
+}
+
+.ghost:hover::before {
+  opacity: 1;
+  animation: spinAngle 1.4s linear infinite;
 }

@@ -12,6 +12,7 @@ import { Gaming } from "@/components/sections/Gaming";
 import { Hero } from "@/components/sections/Hero";
 import { InvestigatorsNotebook } from "@/components/sections/InvestigatorsNotebook";
 import { Toolkit } from "@/components/sections/Toolkit";
+import { CustomCursor } from "@/components/system/CustomCursor";
 import { EasterEggs } from "@/components/system/EasterEggs";
 import { IntroLoader } from "@/components/system/IntroLoader";
 
@@ -36,6 +37,7 @@ export default function App() {
       <Footer />
       <BackToTop />
       <EasterEggs />
+      <CustomCursor />
     </>
   );
 }

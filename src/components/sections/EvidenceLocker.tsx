@@ -1,11 +1,47 @@
+import { useRef, type ReactNode } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tag } from "@/components/ui/Tag";
 import { evidenceFiles, type EvidenceFile } from "@/data/evidence";
 import { icons } from "@/icons";
+import { anime, prefersReducedMotion, useStaggerReveal } from "@/lib/animate";
 import { EvidenceVisual } from "./EvidenceVisual";
 import styles from "./EvidenceLocker.module.css";
+
+/** Premium 3D hover — the card tilts toward the cursor (max ±5deg). */
+function TiltCard({ children, className }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const onMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    const rect = el.getBoundingClientRect();
+    const rotateX = ((event.clientY - rect.top) / rect.height - 0.5) * -8;
+    const rotateY = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
+    anime.remove(el);
+    anime({ targets: el, rotateX, rotateY, duration: 200, easing: "easeOutQuad" });
+  };
+
+  const onLeave = () => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    anime.remove(el);
+    anime({ targets: el, rotateX: 0, rotateY: 0, duration: 650, easing: "easeOutCubic" });
+  };
+
+  return (
+    <div
+      className={`${styles.tiltWrap} ${className ?? ""}`}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
+      <div ref={ref} className={styles.tilt}>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 function EvidenceHeader({ file }: { file: EvidenceFile }) {
   return (
@@ -90,6 +126,7 @@ function EvidenceBody({ file, featured = false }: { file: EvidenceFile; featured
 export function EvidenceLocker() {
   const featured = evidenceFiles.filter((file) => file.featured);
   const rest = evidenceFiles.filter((file) => !file.featured);
+  const gridRef = useStaggerReveal<HTMLDivElement>({ step: 150, y: 34 });
 
   return (
     <section id="evidence" className="section">
@@ -103,21 +140,26 @@ export function EvidenceLocker() {
 
         {featured.map((file) => (
           <Reveal key={file.id}>
-            <GlassCard interactive className={styles.featuredCard}>
-              <EvidenceHeader file={file} />
-              <div className={styles.featuredGrid}>
-                <EvidenceBody file={file} featured />
-                <div className={styles.featuredVisual}>
-                  <EvidenceVisual kind={file.visual} />
+            <TiltCard className={styles.featuredTilt}>
+              <GlassCard interactive className={styles.featuredCard}>
+                <span className={styles.ribbon} aria-hidden="true">
+                  PRIORITY
+                </span>
+                <EvidenceHeader file={file} />
+                <div className={styles.featuredGrid}>
+                  <EvidenceBody file={file} featured />
+                  <div className={styles.featuredVisual}>
+                    <EvidenceVisual kind={file.visual} />
+                  </div>
                 </div>
-              </div>
-            </GlassCard>
+              </GlassCard>
+            </TiltCard>
           </Reveal>
         ))}
 
-        <div className={styles.grid}>
-          {rest.map((file, i) => (
-            <Reveal key={file.id} delay={(i % 2) * 80}>
+        <div ref={gridRef} className={styles.grid}>
+          {rest.map((file) => (
+            <TiltCard key={file.id}>
               <GlassCard interactive className={styles.card}>
                 <EvidenceHeader file={file} />
                 <div className={styles.visual}>
@@ -125,7 +167,7 @@ export function EvidenceLocker() {
                 </div>
                 <EvidenceBody file={file} />
               </GlassCard>
-            </Reveal>
+            </TiltCard>
           ))}
         </div>
       </div>

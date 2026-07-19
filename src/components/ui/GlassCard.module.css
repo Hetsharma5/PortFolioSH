@@ -1,9 +1,9 @@
 .card {
-  background: var(--glass);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-l);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   transition:
     background-color var(--speed) var(--ease),
     border-color var(--speed) var(--ease),
@@ -13,7 +13,9 @@
 
 .interactive:hover {
   background: var(--glass-hover);
-  border-color: var(--border-strong);
+  border-color: rgba(var(--accent-rgb), 0.28);
   transform: translateY(-3px);
-  box-shadow: var(--shadow-2);
+  box-shadow:
+    var(--shadow-2),
+    0 0 24px rgba(var(--accent-rgb), 0.1);
 }

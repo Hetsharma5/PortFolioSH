@@ -2,7 +2,7 @@
  * Tiny pub/sub bus so decoupled components (navbar, easter eggs, palette,
  * toaster) can talk without threading props through the tree.
  */
-export type BusEvent = "toast" | "palette" | "stats" | "notes";
+export type BusEvent = "toast" | "palette" | "stats" | "notes" | "intro";
 
 type Handler = (payload?: unknown) => void;
 
@@ -24,6 +24,20 @@ export function emit(event: BusEvent, payload?: unknown): void {
 
 export function toast(message: string): void {
   emit("toast", message);
+}
+
+/* The intro loader reports when it's done (or skipped) so the hero can
+   time its entrance to the reveal instead of animating behind the overlay. */
+let introDone = false;
+
+export function markIntroDone(): void {
+  if (introDone) return;
+  introDone = true;
+  emit("intro");
+}
+
+export function isIntroDone(): boolean {
+  return introDone;
 }
 
 /** Easter egg: swaps the emerald accent for amber via a root class. */

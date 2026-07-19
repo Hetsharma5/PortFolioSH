@@ -38,10 +38,17 @@
   --container: 1120px;
   --nav-h: 68px;
 
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 12px;
+
   /* Depth */
   --shadow-1: 0 4px 24px rgba(0, 0, 0, 0.3);
   --shadow-2: 0 16px 48px rgba(0, 0, 0, 0.45);
   --shadow-accent: 0 8px 32px var(--accent-glow);
+  --glow-shadow: 0 0 20px rgba(var(--accent-rgb), 0.3);
+  --glow-text: 0 0 14px rgba(var(--accent-rgb), 0.45);
 
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -50,13 +57,20 @@
   color-scheme: dark;
 }
 
-/* Easter egg: typing "221B" flips the accent to deep amber. */
+/* Easter egg: typing "221B" flips the accent to deep amber.
+   Glass and line tints warm up with it so the whole HUD reads amber. */
 :root.investigation {
   --accent: #f0a02e;
   --accent-rgb: 240, 160, 46;
   --accent-bright: #ffbe5c;
   --accent-tint: rgba(240, 160, 46, 0.11);
   --accent-glow: rgba(240, 160, 46, 0.28);
+  --glass: rgba(240, 160, 46, 0.045);
+  --glass-hover: rgba(240, 160, 46, 0.07);
+  --glass-bg: rgba(240, 160, 46, 0.04);
+  --glass-border: rgba(240, 160, 46, 0.14);
+  --border: rgba(240, 160, 46, 0.1);
+  --border-strong: rgba(240, 160, 46, 0.2);
 }
 
 /* ============================================================
@@ -84,6 +98,19 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+}
+
+/* Film-grain overlay — the "classified document" texture. Inline SVG noise,
+   no image files. Sits above everything, never intercepts input. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
 }
 
 h1,
@@ -125,6 +152,12 @@ svg {
   max-width: 100%;
 }
 
+/* Custom cursor active — hide the native pointer everywhere. */
+:root.custom-cursor,
+:root.custom-cursor * {
+  cursor: none !important;
+}
+
 ::selection {
   background: rgba(var(--accent-rgb), 0.3);
   color: var(--text-1);
@@ -134,6 +167,7 @@ svg {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
+  box-shadow: var(--glow-shadow);
 }
 
 /* Subtle dark scrollbar (WebKit) */
@@ -190,6 +224,64 @@ svg {
   }
   100% {
     background-position: 100% 50%;
+  }
+}
+
+/* Horizontal light sweep — apply to a card's ::before on hover. */
+@keyframes sweep {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(280%) skewX(-18deg);
+  }
+}
+
+/* Soft radar pulse for ACTIVE status dots. */
+@keyframes statusPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(var(--accent-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0);
+  }
+}
+
+/* Blinking terminal cursor (steps, not fade). */
+@keyframes caretBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Rotating conic angle for animated gradient borders. */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spinAngle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Falling character columns for the intro's data cascade. */
+@keyframes rainFall {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100vh);
   }
 }
 

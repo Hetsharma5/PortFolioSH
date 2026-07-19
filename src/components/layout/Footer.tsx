@@ -53,6 +53,10 @@ export function Footer() {
             Tip: press <kbd>Ctrl</kbd> <kbd>K</kbd>
           </p>
         </div>
+
+        <p className={styles.endOfFile} aria-hidden="true">
+          // CASE CLOSED — END OF FILE //
+        </p>
       </div>
     </footer>
   );
